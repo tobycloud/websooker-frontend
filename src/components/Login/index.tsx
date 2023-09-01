@@ -52,7 +52,17 @@ export default function LoginDialog(props: {
         </DialogContent>
 
         <DialogActions>
-          <Button disabled={!username || !password}>Login</Button>
+          <Button
+            disabled={!username || !password}
+            onClick={() => {
+              pocketbase
+                .collection("users")
+                .authWithPassword(username, password);
+              onClose();
+            }}
+          >
+            Login
+          </Button>
         </DialogActions>
       </div>
 
