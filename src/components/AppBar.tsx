@@ -15,8 +15,6 @@ export default function AppBar() {
 
   const user = pocketbase.authStore.model;
 
-  console.log(user?.avatar);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <MuiAppBar position="static">
@@ -39,7 +37,7 @@ export default function AppBar() {
               <IconButton>
                 <Avatar
                   alt="That's you lol"
-                  src={pocketbase.getFileUrl(user, user.avatar)}
+                  src={pocketbase.files.getUrl(user, user.avatar)}
                 ></Avatar>
               </IconButton>
               {/* <Menu
