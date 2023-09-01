@@ -18,11 +18,18 @@ import "./Login.css";
 export default function LoginDialog(props: {
   open: boolean;
   onClose: () => void;
+  onLogin?: () => void;
 }) {
-  const { open, onClose } = props;
+  const { open, onClose, onLogin } = props;
 
-  function oauth2(provider: string) {
-    pocketbase.collection("users").authWithOAuth2({ provider });
+  async function oauth2(provider: string) {
+    try {
+      await pocketbase.collection("users").authWithOAuth2({ provider });
+    } catch (e) {
+      console.error(e);
+    }
+    if (onLogin) onLogin();
+    onClose();
   }
 
   const [username, setUsername] = useState("");

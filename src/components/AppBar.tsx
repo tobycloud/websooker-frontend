@@ -3,6 +3,8 @@ import {
   Box,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
   AppBar as MuiAppBar,
   Toolbar,
   Typography,
@@ -12,6 +14,10 @@ import pocketbase from "../database";
 import LoginDialog from "./Login";
 export default function AppBar() {
   const [_openLogin, openLogin] = useState(false);
+  const [_loggedIn, loggedIn] = useState(false);
+
+  const [_openUserMenu, openUserMenu] = useState(false);
+  const [menuLocation, setMenuLocation] = useState<null | HTMLElement>(null);
 
   const user = pocketbase.authStore.model;
 
@@ -22,7 +28,7 @@ export default function AppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Webhook to WebSocket
           </Typography>
-          {!user || !pocketbase.authStore.isValid ? (
+          {!user || !pocketbase.authStore.isValid || !_loggedIn ? (
             <>
               <Button color="inherit" onClick={() => openLogin(true)}>
                 Login
@@ -30,20 +36,23 @@ export default function AppBar() {
               <LoginDialog
                 onClose={() => openLogin(false)}
                 open={_openLogin}
+                onLogin={() => loggedIn(true)}
               ></LoginDialog>
             </>
           ) : (
             <Box>
-              <IconButton>
-                <Avatar
-                  alt="That's you lol"
-                  src={pocketbase.files.getUrl(user, user.avatar)}
-                ></Avatar>
+              <IconButton
+                onClick={() => {
+                  setMenuLocation(document.getElementById("user-menu-button"));
+                  openUserMenu(true);
+                }}
+              >
+                <Avatar />
               </IconButton>
-              {/* <Menu
+              <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
-                anchorEl={anchorElUser}
+                anchorEl={menuLocation}
                 anchorOrigin={{
                   vertical: "top",
                   horizontal: "right",
@@ -53,16 +62,25 @@ export default function AppBar() {
                   vertical: "top",
                   horizontal: "right",
                 }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                open={_openUserMenu}
+                onClose={() => openUserMenu(false)}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Profile</Typography>
+                <MenuItem>
+                  <Typography textAlign="center">
+                    You have used {user.urls}/{user.maxUrls} urls
+                  </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography color={"red"} textAlign="center">Log out</Typography>
+                <MenuItem
+                  onClick={() => {
+                    pocketbase.authStore.clear();
+                    openUserMenu(false);
+                  }}
+                >
+                  <Typography color={"red"} textAlign="center">
+                    Log out
+                  </Typography>
                 </MenuItem>
-              </Menu> */}
+              </Menu>
             </Box>
           )}
         </Toolbar>
