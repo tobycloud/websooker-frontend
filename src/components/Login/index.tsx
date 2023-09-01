@@ -1,5 +1,12 @@
-import { Container, Dialog } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  TextField,
+} from "@mui/material";
 
+import { useState } from "react";
 import {
   DiscordLoginButton,
   GithubLoginButton,
@@ -18,25 +25,53 @@ export default function LoginDialog(props: {
     pocketbase.collection("users").authWithOAuth2({ provider });
   }
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Dialog onClose={onClose} open={open} maxWidth={"sm"} fullWidth>
-      <Container style={{ padding: "4vh" }}>
-        <GoogleLoginButton
-          style={{ padding: "4vh" }}
-          align="center"
-          onClick={() => oauth2("google")}
-        />
-        <GithubLoginButton
-          className="loginButton"
-          align="center"
-          onClick={() => oauth2("github")}
-        />
-        <DiscordLoginButton
-          className="loginButton"
-          align="center"
-          onClick={() => oauth2("discord")}
-        />
-      </Container>
+      <div>
+        <DialogContent>
+          <TextField
+            id="username"
+            label="Username or email address"
+            variant="outlined"
+            sx={{ marginBottom: "1vh" }}
+            fullWidth
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <br />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button disabled={!username || !password}>Login</Button>
+        </DialogActions>
+      </div>
+
+      <div style={{ padding: "4vh" }}>
+        <div className="loginButton">
+          <GoogleLoginButton align="center" onClick={() => oauth2("google")} />
+        </div>
+
+        <div className="loginButton">
+          <GithubLoginButton align="center" onClick={() => oauth2("github")} />
+        </div>
+
+        <div className="loginButton">
+          <DiscordLoginButton
+            align="center"
+            onClick={() => oauth2("discord")}
+          />
+        </div>
+      </div>
     </Dialog>
   );
 }
