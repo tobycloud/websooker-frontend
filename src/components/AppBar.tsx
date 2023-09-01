@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import pocketbase from "../database";
+import { openInNewTab } from "../utils";
 import LoginDialog from "./Login";
 export default function AppBar() {
   const [_openLogin, openLogin] = useState(false);
@@ -65,7 +66,9 @@ export default function AppBar() {
                 open={_openUserMenu}
                 onClose={() => openUserMenu(false)}
               >
-                <MenuItem>
+                <MenuItem
+                  onClick={openInNewTab("https://discord.gg/wJ3kHtmG6J")}
+                >
                   <Typography textAlign="center">
                     You have used {user.urls}/{user.maxUrls} urls
                   </Typography>
