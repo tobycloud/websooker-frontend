@@ -7,9 +7,9 @@ class API {
     this.baseUrl = baseUrl;
   }
 
-  public async getWebsook(): Promise<Websook> {
+  public async getWebsook(path: string): Promise<Websook> {
     const data = (await (
-      await fetch(`${this.baseUrl}`, {
+      await fetch(`${this.baseUrl}/api/${path}`, {
         method: "GET",
         headers: {
           "X-API-Key": pocketbase.authStore.token,
@@ -22,7 +22,7 @@ class API {
 
   public async newWebsook(path: string = ""): Promise<Websook> {
     const data = (await (
-      await fetch(`${this.baseUrl}${path}`, {
+      await fetch(`${this.baseUrl}/api/${path}`, {
         method: "POST",
         headers: {
           "X-API-Key": pocketbase.authStore.token,
@@ -38,7 +38,7 @@ class API {
 
   public async updateWebsook(websook: Websook): Promise<Websook> {
     const data = (await (
-      await fetch(`${this.baseUrl}${websook.path.webhook}`, {
+      await fetch(`${this.baseUrl}/api/${websook.path.webhook}`, {
         method: "PATCH",
         headers: {
           "X-API-Key": pocketbase.authStore.token,
@@ -51,7 +51,7 @@ class API {
   }
 
   public async deleteWebsook(websook: Websook): Promise<void> {
-    await fetch(`${this.baseUrl}${websook.path.webhook}`, {
+    await fetch(`${this.baseUrl}/api/${websook.path.webhook}`, {
       method: "DELETE",
       headers: {
         "X-API-Key": pocketbase.authStore.token,
@@ -61,7 +61,7 @@ class API {
 }
 
 const api = new API(
-  import.meta.env.BACKEND_URL || "https://whs.tobycm.systems/api/"
+  import.meta.env.BASE_WHS_URL || "https://whs.tobycm.systems"
 );
 
 export default api;
