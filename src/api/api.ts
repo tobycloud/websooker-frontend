@@ -1,5 +1,5 @@
 import pocketbase from "../database";
-import { WebSook } from "./models";
+import { APIWebSookData, WebSook } from "./models";
 
 class API {
   private baseUrl: string;
@@ -7,55 +7,54 @@ class API {
     this.baseUrl = baseUrl;
   }
 
+  private addAuth(headers: Headers): void {
+    headers.append("Authorization", pocketbase.authStore.token);
+  }
+
   public async getWebsook(path: string): Promise<WebSook> {
-    const data = await (
-      await fetch(`${this.baseUrl}/api/${path}`, {
-        method: "GET",
-        headers: {
-          "X-API-Key": pocketbase.authStore.token,
-        },
-      })
+    const headers = new Headers();
+    this.addAuth(headers);
+    const response: APIWebSookData = await (
+      await fetch(`${this.baseUrl}/api/${path}`, { method: "GET", headers })
     ).json();
 
-    return new WebSook(data);
+    return new WebSook(response);
   }
 
   public async newWebsook(path: string = ""): Promise<WebSook> {
-    const data = await (
+    const headers = new Headers();
+    this.addAuth(headers);
+    const response: APIWebSookData = await (
       await fetch(`${this.baseUrl}/api/${path}`, {
         method: "POST",
-        headers: {
-          "X-API-Key": pocketbase.authStore.token,
-        },
-        body: JSON.stringify({
-          path,
-        }),
+        headers,
+        body: JSON.stringify({ path }),
       })
     ).json();
 
-    return new WebSook(data);
+    return new WebSook(response);
   }
 
   public async updateWebsook(websook: WebSook): Promise<WebSook> {
-    const data = await (
-      await fetch(websook.webhook, {
+    const headers = new Headers();
+    this.addAuth(headers);
+    const response: APIWebSookData = await (
+      await fetch(`${this.baseUrl}/api/${websook.id.webhook}`, {
         method: "PATCH",
-        headers: {
-          "X-API-Key": pocketbase.authStore.token,
-        },
+        headers,
         body: JSON.stringify(websook),
       })
     ).json();
 
-    return new WebSook(data);
+    return new WebSook(response);
   }
 
   public async deleteWebsook(websook: WebSook): Promise<void> {
-    await fetch(websook.webhook, {
+    const headers = new Headers();
+    this.addAuth(headers);
+    await fetch(`${this.baseUrl}/api/${websook.id.webhook}`, {
       method: "DELETE",
-      headers: {
-        "X-API-Key": pocketbase.authStore.token,
-      },
+      headers,
     });
   }
 }
