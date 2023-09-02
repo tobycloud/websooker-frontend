@@ -1,5 +1,5 @@
 import pocketbase from "../database";
-import { Websook } from "./models";
+import { WebSook } from "./models";
 
 class API {
   private baseUrl: string;
@@ -7,21 +7,21 @@ class API {
     this.baseUrl = baseUrl;
   }
 
-  public async getWebsook(path: string): Promise<Websook> {
-    const data = (await (
+  public async getWebsook(path: string): Promise<WebSook> {
+    const data = await (
       await fetch(`${this.baseUrl}/api/${path}`, {
         method: "GET",
         headers: {
           "X-API-Key": pocketbase.authStore.token,
         },
       })
-    ).json()) as Websook;
+    ).json();
 
-    return data;
+    return new WebSook(data);
   }
 
-  public async newWebsook(path: string = ""): Promise<Websook> {
-    const data = (await (
+  public async newWebsook(path: string = ""): Promise<WebSook> {
+    const data = await (
       await fetch(`${this.baseUrl}/api/${path}`, {
         method: "POST",
         headers: {
@@ -31,27 +31,27 @@ class API {
           path,
         }),
       })
-    ).json()) as Websook;
+    ).json();
 
-    return data;
+    return new WebSook(data);
   }
 
-  public async updateWebsook(websook: Websook): Promise<Websook> {
-    const data = (await (
-      await fetch(`${this.baseUrl}/api/${websook.path.webhook}`, {
+  public async updateWebsook(websook: WebSook): Promise<WebSook> {
+    const data = await (
+      await fetch(websook.webhook, {
         method: "PATCH",
         headers: {
           "X-API-Key": pocketbase.authStore.token,
         },
         body: JSON.stringify(websook),
       })
-    ).json()) as Websook;
+    ).json();
 
-    return data;
+    return new WebSook(data);
   }
 
-  public async deleteWebsook(websook: Websook): Promise<void> {
-    await fetch(`${this.baseUrl}/api/${websook.path.webhook}`, {
+  public async deleteWebsook(websook: WebSook): Promise<void> {
+    await fetch(websook.webhook, {
       method: "DELETE",
       headers: {
         "X-API-Key": pocketbase.authStore.token,
@@ -61,7 +61,7 @@ class API {
 }
 
 const api = new API(
-  import.meta.env.BASE_WHS_URL || "https://whs.tobycm.systems"
+  import.meta.env.VITE_BASE_WHS_URL || "https://whs.tobycm.systems"
 );
 
 export default api;
