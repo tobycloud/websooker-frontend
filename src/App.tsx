@@ -1,5 +1,14 @@
 import { ThemeProvider } from "@emotion/react";
-import { CssBaseline, createTheme, useMediaQuery } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  CssBaseline,
+  Grid,
+  Typography,
+  createTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
 import pocketbase from "./database";
@@ -34,6 +43,38 @@ function RealApp() {
   return (
     <>
       <AppBar />
+      {pocketbase.authStore.model!.urls === 0 ? (
+        <Box>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item xs={3}>
+              <Box sx={{ p: 2 }}>
+                <Typography variant="h3" align="center">
+                  Welcome to Webhook 2 WebSocket
+                </Typography>
+                <Typography variant="h6" marginTop={"2vh"} align="center">
+                  You have no WebSooks yet. Create a new one by clicking the
+                  button below.
+                </Typography>
+                <Box display={"flex"} justifyContent={"center"} mt={"2vh"}>
+                  <Button startIcon={<Add />}>
+                    <Typography variant="h6" align="center">
+                      Create new WebSook
+                    </Typography>
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      ) : (
+        <Box></Box>
+      )}
     </>
   );
 }

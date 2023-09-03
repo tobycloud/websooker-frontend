@@ -74,13 +74,11 @@ export default function LoginForm() {
               }
               setSigningIn(false);
             }}
+            endIcon={
+              signingIn ? <CircularProgress size={"2.1vw"} /> : <ArrowForward />
+            }
           >
-            Login{" "}
-            {signingIn ? (
-              <CircularProgress size={"2vh"} sx={{ marginLeft: "0.3vw" }} />
-            ) : (
-              <ArrowForward />
-            )}
+            Login
           </Button>
         </Box>
 
