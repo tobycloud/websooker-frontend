@@ -1,12 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
-import {
-  AppBar,
-  Button,
-  CssBaseline,
-  createTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { useMemo, useState } from "react";
+import AppBar from "./components/AppBar";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
 
@@ -36,14 +31,9 @@ export default function App() {
 }
 
 function RealApp() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <AppBar />
-      <Button variant="contained" onClick={() => setCount(count + 1)}>
-        Clicked {count} times
-      </Button>
     </>
   );
 }

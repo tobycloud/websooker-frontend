@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 
 import { useState } from "react";
 import {
@@ -21,59 +21,76 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   return (
-    <Box maxWidth={"sm"} minHeight={"100%"} margin={"auto"}>
-      <Box>
-        <TextField
-          id="username"
-          label="Username or email address"
-          variant="outlined"
-          sx={{ marginBottom: "1vh" }}
-          fullWidth
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
-        <TextField
-          id="password"
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          onChange={(e) => setPassword(e.target.value)}
-        />
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item xs={3}>
+        <Box width={"50vw"}>
+          <Box>
+            <TextField
+              id="username"
+              label="Username or email address"
+              variant="outlined"
+              sx={{ marginBottom: "1vh" }}
+              fullWidth
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <br />
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <Button
-          disabled={!username || !password}
-          onClick={async () => {
-            try {
-              await pocketbase
-                .collection("users")
-                .authWithPassword(username, password);
-            } catch (e) {
-              console.error(e);
-            }
-          }}
-          sx={{ marginTop: "2vh" }}
-        >
-          Login
-        </Button>
-      </Box>
+            <Button
+              disabled={!username || !password}
+              onClick={async () => {
+                try {
+                  await pocketbase
+                    .collection("users")
+                    .authWithPassword(username, password);
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
+              sx={{ marginTop: "2vh" }}
+            >
+              Login
+            </Button>
+          </Box>
 
-      <Box sx={{ padding: "4vh" }}>
-        <>
-          <GoogleLoginButton align="center" onClick={() => oauth2("google")} />
-        </>
+          <Box>
+            <>
+              <GoogleLoginButton
+                align="center"
+                onClick={() => oauth2("google")}
+              />
+            </>
 
-        <>
-          <GithubLoginButton align="center" onClick={() => oauth2("github")} />
-        </>
+            <>
+              <GithubLoginButton
+                align="center"
+                onClick={() => oauth2("github")}
+              />
+            </>
 
-        <>
-          <DiscordLoginButton
-            align="center"
-            onClick={() => oauth2("discord")}
-          />
-        </>
-      </Box>
-    </Box>
+            <>
+              <DiscordLoginButton
+                align="center"
+                onClick={() => oauth2("discord")}
+              />
+            </>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
