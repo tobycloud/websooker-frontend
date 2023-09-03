@@ -7,7 +7,6 @@ import {
   GoogleLoginButton,
 } from "react-social-login-buttons";
 import pocketbase from "../../database"; // :grimacing:
-import "./Login.css";
 
 export default function LoginPage() {
   async function oauth2(provider: string) {
@@ -22,7 +21,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   return (
-    <Box>
+    <Box maxWidth={"sm"} minHeight={"100%"} margin={"auto"}>
       <Box>
         <TextField
           id="username"
@@ -53,12 +52,13 @@ export default function LoginPage() {
               console.error(e);
             }
           }}
+          sx={{ marginTop: "2vh" }}
         >
           Login
         </Button>
       </Box>
 
-      <Box sx={{ padding: "4vh" }} className="loginButtons">
+      <Box sx={{ padding: "4vh" }}>
         <>
           <GoogleLoginButton align="center" onClick={() => oauth2("google")} />
         </>
