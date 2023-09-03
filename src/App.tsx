@@ -1,15 +1,19 @@
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import AppBar from "./components/AppBar";
-
-import React, { useState } from "react";
+import { ThemeProvider } from "@emotion/react";
+import {
+  AppBar,
+  Button,
+  CssBaseline,
+  createTheme,
+  useMediaQuery,
+} from "@mui/material";
+import { useMemo, useState } from "react";
+import pocketbase from "./database";
+import LoginPage from "./pages/Login";
 
 export default function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
-  const theme = React.useMemo(
+  const theme = useMemo(
     () =>
       createTheme({
         palette: {
@@ -19,10 +23,14 @@ export default function App() {
     [prefersDarkMode]
   );
 
+  const [_loggedIn, loggedIn] = useState(pocketbase.authStore.isValid);
+
+  pocketbase.authStore.onChange((token, model) => loggedIn(!!(token && model)));
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RealApp />
+      {_loggedIn ? <RealApp /> : <LoginPage />}
     </ThemeProvider>
   );
 }
