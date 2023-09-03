@@ -1,3 +1,4 @@
+import { Close } from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -5,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
 } from "@mui/material";
 
 export default function LoginFailedDialog(props: {
@@ -16,6 +18,18 @@ export default function LoginFailedDialog(props: {
   return (
     <Dialog open={open} onClose={close}>
       <DialogTitle>Login Failed</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={close}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <Close />
+      </IconButton>
       <DialogContent>
         <DialogContentText>
           Your username or password was incorrect.

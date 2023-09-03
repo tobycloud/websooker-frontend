@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/Login/Form";
 import RegisterForm from "../components/RegisterForm";
 
 export default function LoginPage() {

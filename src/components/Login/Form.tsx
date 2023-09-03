@@ -12,8 +12,8 @@ import {
   GithubLoginButton,
   GoogleLoginButton,
 } from "react-social-login-buttons";
-import pocketbase from "../database";
-import LoginFailedDialog from "./LoginFailed";
+import pocketbase from "../../database";
+import LoginFailedDialog from "./FailedDialog";
 
 export default function LoginForm() {
   async function oauth2(provider: string) {

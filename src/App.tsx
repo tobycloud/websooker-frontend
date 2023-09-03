@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
+import NewWebSookDialog from "./components/WebSook/NewDialog";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
 
@@ -40,10 +41,28 @@ export default function App() {
 }
 
 function RealApp() {
+  const [newWebSookDialogOpen, setNewWebSookDialogOpen] = useState(false);
+
+  const [zeroUrls, setZeroUrls] = useState(false);
+
+  pocketbase
+    .collection("users")
+    .getOne(pocketbase.authStore.model!.id)
+    .then((user) => {
+      if (user.urls === 0) setZeroUrls(true);
+      // pocketbase auto cancel smh
+      pocketbase
+        .collection("users")
+        .subscribe(pocketbase.authStore.model!.id, (user) => {
+          if (user.record.urls === 0) setZeroUrls(true);
+          else setZeroUrls(false);
+        });
+    });
+
   return (
     <>
       <AppBar />
-      {pocketbase.authStore.model!.urls === 0 ? (
+      {zeroUrls ? (
         <Box>
           <Grid
             container
@@ -62,7 +81,10 @@ function RealApp() {
                   button below.
                 </Typography>
                 <Box display={"flex"} justifyContent={"center"} mt={"2vh"}>
-                  <Button startIcon={<Add />}>
+                  <Button
+                    onClick={() => setNewWebSookDialogOpen(true)}
+                    startIcon={<Add />}
+                  >
                     <Typography variant="h6" align="center">
                       Create new WebSook
                     </Typography>
@@ -71,6 +93,10 @@ function RealApp() {
               </Box>
             </Grid>
           </Grid>
+          <NewWebSookDialog
+            open={newWebSookDialogOpen}
+            close={() => setNewWebSookDialogOpen(false)}
+          />
         </Box>
       ) : (
         <Box></Box>
