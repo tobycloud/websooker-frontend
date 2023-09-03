@@ -1,4 +1,11 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { ArrowForward } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import {
   DiscordLoginButton,
@@ -6,6 +13,7 @@ import {
   GoogleLoginButton,
 } from "react-social-login-buttons";
 import pocketbase from "../database";
+import LoginFailedDialog from "./LoginFailed";
 
 export default function LoginForm() {
   async function oauth2(provider: string) {
@@ -15,6 +23,9 @@ export default function LoginForm() {
       console.error(e);
     }
   }
+
+  const [signingIn, setSigningIn] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -43,21 +54,40 @@ export default function LoginForm() {
         />
         <br />
 
-        <Button
-          disabled={!username || !password}
-          onClick={async () => {
-            try {
-              await pocketbase
-                .collection("users")
-                .authWithPassword(username, password);
-            } catch (e) {
-              console.error(e);
-            }
-          }}
-          sx={{ marginTop: "1vh", justifyContent: "flex-end" }}
+        <Box
+          display={"flex"}
+          justifyContent={"right"}
+          mt={"1vh"}
+          sx={{ textAlign: "left" }}
         >
-          Login
-        </Button>
+          <Button
+            disabled={!username || !password}
+            onClick={async () => {
+              setSigningIn(true);
+              try {
+                await pocketbase
+                  .collection("users")
+                  .authWithPassword(username, password);
+              } catch (e) {
+                console.error(e);
+                setLoginFailed(true);
+              }
+              setSigningIn(false);
+            }}
+          >
+            Login{" "}
+            {signingIn ? (
+              <CircularProgress size={"2vh"} sx={{ marginLeft: "0.3vw" }} />
+            ) : (
+              <ArrowForward />
+            )}
+          </Button>
+        </Box>
+
+        <LoginFailedDialog
+          open={loginFailed}
+          close={() => setLoginFailed(false)}
+        />
       </Box>
 
       <Box marginTop={"10vh"}>
