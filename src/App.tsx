@@ -1,18 +1,9 @@
 import { ThemeProvider } from "@emotion/react";
-import { Add } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  CssBaseline,
-  Grid,
-  Typography,
-  createTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { RecordSubscription } from "pocketbase";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
-import NewWebSookDialog from "./components/WebSook/NewDialog";
+import WelcomeMessageWithAdd from "./components/WelcomeMessageWithAdd";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
 
@@ -51,7 +42,7 @@ export default function App() {
 }
 
 function RealApp() {
-  const [newWebSookDialogOpen, setNewWebSookDialogOpen] = useState(false);
+  const [_openDialog, openDialog] = useState(false);
 
   const [zeroUrls, setZeroUrls] = useState(
     pocketbase.authStore.model!.urls === 0
@@ -61,7 +52,7 @@ function RealApp() {
     .collection("users")
     .subscribe(pocketbase.authStore.model!.id, updateAuthStore);
 
-  pocketbase.authStore.onChange((token, model) => {
+  pocketbase.authStore.onChange((_, model) => {
     if (!model) return;
     if (model.urls === 0) setZeroUrls(true);
     else setZeroUrls(false);
@@ -71,41 +62,10 @@ function RealApp() {
     <>
       <AppBar />
       {zeroUrls ? (
-        <Box>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Grid item xs={3}>
-              <Box sx={{ p: 2 }}>
-                <Typography variant="h3" align="center">
-                  Welcome to Webhook 2 WebSocket
-                </Typography>
-                <Typography variant="h6" marginTop={"2vh"} align="center">
-                  You have no WebSooks yet. Create a new one by clicking the
-                  button below.
-                </Typography>
-                <Box display={"flex"} justifyContent={"center"} mt={"2vh"}>
-                  <Button
-                    onClick={() => setNewWebSookDialogOpen(true)}
-                    startIcon={<Add />}
-                  >
-                    <Typography variant="h6" align="center">
-                      Create new WebSook
-                    </Typography>
-                  </Button>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-          <NewWebSookDialog
-            open={newWebSookDialogOpen}
-            close={() => setNewWebSookDialogOpen(false)}
-          />
-        </Box>
+        <WelcomeMessageWithAdd
+          openDialog={openDialog}
+          _openDialog={_openDialog}
+        />
       ) : (
         <Box></Box>
       )}
