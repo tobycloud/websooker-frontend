@@ -9,11 +9,21 @@ import {
   createTheme,
   useMediaQuery,
 } from "@mui/material";
+import { RecordSubscription } from "pocketbase";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
 import NewWebSookDialog from "./components/WebSook/NewDialog";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
+
+function updateAuthStore(event: RecordSubscription) {
+  if (event.action == "delete") {
+    pocketbase.authStore.clear();
+    pocketbase.collection("users").unsubscribe(pocketbase.authStore.model!.id);
+  } else {
+    pocketbase.authStore.save(pocketbase.authStore.token, event.record);
+  }
+}
 
 export default function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -43,21 +53,19 @@ export default function App() {
 function RealApp() {
   const [newWebSookDialogOpen, setNewWebSookDialogOpen] = useState(false);
 
-  const [zeroUrls, setZeroUrls] = useState(false);
+  const [zeroUrls, setZeroUrls] = useState(
+    pocketbase.authStore.model!.urls === 0
+  );
 
   pocketbase
     .collection("users")
-    .getOne(pocketbase.authStore.model!.id)
-    .then((user) => {
-      if (user.urls === 0) setZeroUrls(true);
-      // pocketbase auto cancel smh
-      pocketbase
-        .collection("users")
-        .subscribe(pocketbase.authStore.model!.id, (user) => {
-          if (user.record.urls === 0) setZeroUrls(true);
-          else setZeroUrls(false);
-        });
-    });
+    .subscribe(pocketbase.authStore.model!.id, updateAuthStore);
+
+  pocketbase.authStore.onChange((token, model) => {
+    if (!model) return;
+    if (model.urls === 0) setZeroUrls(true);
+    else setZeroUrls(false);
+  });
 
   return (
     <>

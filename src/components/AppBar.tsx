@@ -18,6 +18,15 @@ export default function AppBar() {
 
   const user = pocketbase.authStore.model!;
 
+  const [urls, setUrls] = useState(user.urls);
+  const [maxUrls, setMaxUrls] = useState(user.maxUrls);
+
+  pocketbase.authStore.onChange((token, model) => {
+    if (!model) return;
+    setUrls(model.urls);
+    setMaxUrls(model.maxUrls);
+  });
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <MuiAppBar position="static">
@@ -53,7 +62,7 @@ export default function AppBar() {
             >
               <MenuItem onClick={openInNewTab("https://discord.gg/wJ3kHtmG6J")}>
                 <Typography textAlign="center">
-                  You have used {user.urls}/{user.maxUrls} urls
+                  You have used {urls}/{maxUrls} urls
                 </Typography>
               </MenuItem>
               <MenuItem
