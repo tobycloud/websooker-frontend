@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.tobycm.systems/', 'TobyRegistry') {
-                        def dockerImage = docker.build("registry.tobycm.systems/whs-frontend", "-f Dockerfile .")
+                        def dockerImage = docker.build("registry.tobycm.systems/websooker-frontend", "-f Dockerfile .")
                         dockerImage.push()
                     }
                 }
