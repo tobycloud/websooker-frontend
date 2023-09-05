@@ -21,10 +21,10 @@ export default function AppBar() {
   const [urls, setUrls] = useState(user.urls);
   const [maxUrls, setMaxUrls] = useState(user.maxUrls);
 
-  pocketbase.authStore.onChange((token, model) => {
-    if (!model) return;
-    setUrls(model.urls);
-    setMaxUrls(model.maxUrls);
+  pocketbase.authStore.onChange((_, user) => {
+    if (!user) return;
+    setUrls(user.urls);
+    setMaxUrls(user.maxUrls);
   });
 
   return (

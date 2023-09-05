@@ -53,9 +53,9 @@ function RealApp() {
     .collection("users")
     .subscribe(pocketbase.authStore.model!.id, updateAuthStore);
 
-  pocketbase.authStore.onChange((_, model) => {
-    if (!model) return;
-    if (model.urls === 0) setZeroUrls(true);
+  pocketbase.authStore.onChange((_, user) => {
+    if (!user) return;
+    if (user.urls === 0) setZeroUrls(true);
     else setZeroUrls(false);
   });
 
