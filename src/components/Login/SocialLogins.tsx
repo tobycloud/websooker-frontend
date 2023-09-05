@@ -4,28 +4,27 @@ import {
   GithubLoginButton,
   GoogleLoginButton,
 } from "react-social-login-buttons";
-import pocketbase from "../../database";
+import oauth2 from "../../database/oauth2";
 
 export default function SocialLogins() {
-  async function oauth2(provider: string) {
-    try {
-      await pocketbase.collection("users").authWithOAuth2({ provider });
-    } catch (e) {
-      console.error(e);
-    }
-  }
   return (
     <Box marginTop={"10vh"}>
       <>
-        <GoogleLoginButton align="center" onClick={() => oauth2("google")} />
+        <GoogleLoginButton align="center" onClick={() => oauth2("google")}>
+          Continue with Google
+        </GoogleLoginButton>
       </>
 
       <>
-        <GithubLoginButton align="center" onClick={() => oauth2("github")} />
+        <GithubLoginButton align="center" onClick={() => oauth2("github")}>
+          Continue with GitHub
+        </GithubLoginButton>
       </>
 
       <>
-        <DiscordLoginButton align="center" onClick={() => oauth2("discord")} />
+        <DiscordLoginButton align="center" onClick={() => oauth2("discord")}>
+          Continue with Discord
+        </DiscordLoginButton>
       </>
     </Box>
   );
