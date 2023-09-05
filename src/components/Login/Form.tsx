@@ -1,30 +1,10 @@
-import { ArrowForward } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import {
-  DiscordLoginButton,
-  GithubLoginButton,
-  GoogleLoginButton,
-} from "react-social-login-buttons";
-import pocketbase from "../../database";
 import LoginFailedDialog from "./FailedDialog";
+import LoginButton from "./LoginButton";
+import SocialLogins from "./SocialLogins";
 
 export default function LoginForm() {
-  async function oauth2(provider: string) {
-    try {
-      await pocketbase.collection("users").authWithOAuth2({ provider });
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  const [signingIn, setSigningIn] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
 
   const [username, setUsername] = useState("");
@@ -60,26 +40,11 @@ export default function LoginForm() {
           mt={"1vh"}
           sx={{ textAlign: "left" }}
         >
-          <Button
-            disabled={!username || !password}
-            onClick={async () => {
-              setSigningIn(true);
-              try {
-                await pocketbase
-                  .collection("users")
-                  .authWithPassword(username, password);
-              } catch (e) {
-                console.error(e);
-                setLoginFailed(true);
-              }
-              setSigningIn(false);
-            }}
-            endIcon={
-              signingIn ? <CircularProgress size={"2.1vw"} /> : <ArrowForward />
-            }
-          >
-            Login
-          </Button>
+          <LoginButton
+            username={username}
+            password={password}
+            onLoginFailed={() => setLoginFailed(true)}
+          />
         </Box>
 
         <LoginFailedDialog
@@ -88,22 +53,7 @@ export default function LoginForm() {
         />
       </Box>
 
-      <Box marginTop={"10vh"}>
-        <>
-          <GoogleLoginButton align="center" onClick={() => oauth2("google")} />
-        </>
-
-        <>
-          <GithubLoginButton align="center" onClick={() => oauth2("github")} />
-        </>
-
-        <>
-          <DiscordLoginButton
-            align="center"
-            onClick={() => oauth2("discord")}
-          />
-        </>
-      </Box>
+      <SocialLogins />
     </Box>
   );
 }
