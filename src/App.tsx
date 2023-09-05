@@ -3,6 +3,7 @@ import { Box, CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { RecordSubscription } from "pocketbase";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
+import WebSookList from "./components/WebSook/HomePageList";
 import WelcomeMessageWithAdd from "./components/WelcomeMessageWithAdd";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
@@ -67,7 +68,9 @@ function RealApp() {
           _openDialog={_openDialog}
         />
       ) : (
-        <Box></Box>
+        <Box>
+          <WebSookList />
+        </Box>
       )}
     </>
   );
