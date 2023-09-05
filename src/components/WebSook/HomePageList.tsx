@@ -32,10 +32,10 @@ export default function WebSookList() {
       {websooks.map((websook) => (
         <ListItem>
           <ListItemText
-            primary={`${import.meta.env.VITE_BASE_WHS_URL}/wh/${
+            primary={`${import.meta.env.VITE_BASE_WEBSOOKER_URL}/wh/${
               websook.id.websook
             }`}
-            secondary={`${import.meta.env.VITE_BASE_WHS_URL}/ws/${
+            secondary={`${import.meta.env.VITE_BASE_WEBSOOKER_URL}/ws/${
               websook.id.websocket
             }`}
           />
