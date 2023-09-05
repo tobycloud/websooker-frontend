@@ -3,7 +3,9 @@ import { useState } from "react";
 import Websook from "../../database/websook";
 
 export default function WebSookList() {
-  const [websooks, setWebsooks] = useState<Websook[]>([
+  const [websooks, setWebsooks] = useState<Websook[]>([]);
+
+  setWebsooks([
     {
       id: {
         websook: "nvb9q837trf3n28h",
