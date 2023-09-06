@@ -1,6 +1,5 @@
 import PocketBase from "pocketbase";
-
-const POCKETBASE_URL = import.meta.env.VITE_POCKETBASE_URL;
+import { POCKETBASE_URL } from "../constants";
 
 const pocketbase = new PocketBase(POCKETBASE_URL);
 
