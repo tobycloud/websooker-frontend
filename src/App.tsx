@@ -68,7 +68,7 @@ function RealApp() {
           _openDialog={_openDialog}
         />
       ) : (
-        <Box>
+        <Box width={"80vw"}>
           <WebSookList />
         </Box>
       )}
