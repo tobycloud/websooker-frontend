@@ -18,7 +18,7 @@ export default function Welcome() {
         <Grid item xs={3}>
           <Box sx={{ p: 2 }}>
             <Typography variant="h3" align="center">
-              Welcome to Webhook 2 WebSocket
+              Welcome to WebSooker
             </Typography>
             <Typography variant="h6" marginTop={"2vh"} align="center">
               You have no WebSooks yet. Create a new one by clicking the button

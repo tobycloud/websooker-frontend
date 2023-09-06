@@ -32,7 +32,7 @@ export default function AppBar() {
       <MuiAppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Webhook to WebSocket
+            WebSooker
           </Typography>
 
           <Box>

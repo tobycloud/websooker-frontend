@@ -63,7 +63,7 @@ function RealApp() {
       {zeroUrls ? (
         <Welcome />
       ) : (
-        <Box>
+        <Box width={"80vw"}>
           <WebSookList />
         </Box>
       )}
