@@ -1,38 +1,39 @@
 import { List, ListItem, ListItemText } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import pocketbase from "../../database";
 import Websook from "../../database/websook";
+
+async function updateWebsooksList(setWebsooks: (websooks: Websook[]) => void) {
+  const websooks = await pocketbase.collection("websooks").getList(1, 50);
+
+  setWebsooks(
+    websooks.items.map((item) => {
+      return {
+        id: {
+          websook: item.websookId,
+          websocket: item.websocketId,
+        },
+        owner: item.owner,
+      };
+    })
+  );
+}
 
 export default function WebSookList() {
   const [websooks, setWebsooks] = useState<Websook[]>([]);
 
-  setWebsooks([
-    {
-      id: {
-        websook: "nvb9q837trf3n28h",
-        websocket: "93nex72n8e9bqtfy7chdeb78c8rq8y8734hnov1f",
-      },
-      owner: "tobycm",
-    },
-    {
-      id: {
-        websook: "nvb9q837trf3n28h",
-        websocket: "93nex72n8e9bqtfy7chdeb78c8rq8y8734hnov1f",
-      },
-      owner: "tobycm",
-    },
-    {
-      id: {
-        websook: "nvb9q837trf3n28h",
-        websocket: "93nex72n8e9bqtfy7chdeb78c8rq8y8734hnov1f",
-      },
-      owner: "tobycm",
-    },
-  ]);
+  useEffect(() => {
+    updateWebsooksList(setWebsooks);
+
+    pocketbase
+      .collection("websooks")
+      .subscribe("*", () => updateWebsooksList(setWebsooks));
+  }, []);
 
   return (
     <List>
       {websooks.map((websook) => (
-        <ListItem>
+        <ListItem key={websook.id.websook}>
           <ListItemText
             primary={`${import.meta.env.VITE_BASE_WEBSOOKER_URL}/wh/${
               websook.id.websook
