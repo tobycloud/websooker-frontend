@@ -4,7 +4,7 @@ import { RecordSubscription } from "pocketbase";
 import { useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
 import WebSookList from "./components/WebSook/HomePageList";
-import WelcomeMessageWithAdd from "./components/WelcomeMessageWithAdd";
+import Welcome from "./components/WelcomeMessageWithAdd";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
 
@@ -43,8 +43,6 @@ export default function App() {
 }
 
 function RealApp() {
-  const [_openDialog, openDialog] = useState(false);
-
   const [zeroUrls, setZeroUrls] = useState(
     pocketbase.authStore.model!.urls === 0
   );
@@ -63,10 +61,7 @@ function RealApp() {
     <>
       <AppBar />
       {zeroUrls ? (
-        <WelcomeMessageWithAdd
-          openDialog={openDialog}
-          _openDialog={_openDialog}
-        />
+        <Welcome />
       ) : (
         <Box>
           <WebSookList />

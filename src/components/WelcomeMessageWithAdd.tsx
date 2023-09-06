@@ -1,13 +1,10 @@
 import { Add } from "@mui/icons-material";
 import { Box, Button, Grid, Typography } from "@mui/material";
+import { useState } from "react";
 import NewWebSookDialog from "./WebSook/NewDialog";
 
-export default function WelcomeMessageWithAdd(props: {
-  _openDialog: boolean;
-
-  openDialog: (open: boolean) => void;
-}) {
-  const { _openDialog, openDialog } = props;
+export default function Welcome() {
+  const [_openDialog, openDialog] = useState(false);
 
   return (
     <Box>
