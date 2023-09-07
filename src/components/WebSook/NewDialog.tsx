@@ -49,7 +49,7 @@ export default function NewWebSookDialog(props: {
             try {
               await pocketbase.collection("websooks").create({
                 websookId: path || randomString(6),
-                websocketId: randomString(64),
+                websocketId: randomString(32),
                 owner: pocketbase.authStore.model!.id,
               });
             } catch (e) {
