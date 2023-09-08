@@ -1,11 +1,7 @@
-import { Add } from "@mui/icons-material";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import { useState } from "react";
-import NewWebSookDialog from "./WebSook/NewDialog";
+import { Box, Grid, Typography } from "@mui/material";
+import NewWebSookDialogAndButton from "./WebSook/New";
 
 export default function Welcome() {
-  const [_openDialog, openDialog] = useState(false);
-
   return (
     <Box>
       <Grid
@@ -25,16 +21,11 @@ export default function Welcome() {
               below.
             </Typography>
             <Box display={"flex"} justifyContent={"center"} mt={"2vh"}>
-              <Button onClick={() => openDialog(true)} startIcon={<Add />}>
-                <Typography variant="h6" align="center">
-                  Create new WebSook
-                </Typography>
-              </Button>
+              <NewWebSookDialogAndButton />
             </Box>
           </Box>
         </Grid>
       </Grid>
-      <NewWebSookDialog open={_openDialog} close={() => openDialog(false)} />
     </Box>
   );
 }

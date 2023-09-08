@@ -3,7 +3,7 @@ import { Box, CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import AppBar from "./components/AppBar";
 import WebSookList from "./components/WebSook/HomePageList";
-import Welcome from "./components/WelcomeMessageWithAdd";
+import Welcome from "./components/Welcome";
 import pocketbase from "./database";
 import LoginPage from "./pages/Login";
 
@@ -19,6 +19,10 @@ export default function App() {
       }),
     [prefersDarkMode]
   );
+
+  useEffect(() => {
+    pocketbase.collection("users").authRefresh();
+  }, []);
 
   const [_loggedIn, loggedIn] = useState(pocketbase.authStore.isValid);
 

@@ -5,7 +5,9 @@ import pocketbase from "../../database";
 import Websook from "../../database/websook";
 
 async function updateWebsooksList(setWebsooks: (websooks: Websook[]) => void) {
-  const websooks = await pocketbase.collection("websooks").getList(1, 50);
+  const websooks = await pocketbase.collection("websooks").getList(1, 50, {
+    sort: "-created",
+  });
 
   setWebsooks(
     websooks.items.map((item) => {

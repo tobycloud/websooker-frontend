@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import pocketbase from "../database";
 import { openInNewTab } from "../utils";
+import NewWebSookDialogAndButton from "./WebSook/New";
 
 export default function AppBar() {
   const [_openUserMenu, openUserMenu] = useState(false);
@@ -34,6 +35,11 @@ export default function AppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             WebSooker
           </Typography>
+
+          <NewWebSookDialogAndButton
+            buttonText="New WebSook"
+            buttonProps={{ size: "large" }}
+          />
 
           <Box>
             <IconButton
