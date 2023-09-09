@@ -26,7 +26,9 @@ export default function App() {
 
   const [_loggedIn, loggedIn] = useState(pocketbase.authStore.isValid);
 
-  pocketbase.authStore.onChange((token, model) => loggedIn(!!(token && model)));
+  useEffect(() =>
+    pocketbase.authStore.onChange((token, model) => loggedIn(!!(token && model)))
+  )
 
   return (
     <ThemeProvider theme={theme}>
