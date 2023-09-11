@@ -21,29 +21,20 @@ export default function App() {
   );
 
   useEffect(() => {
-    (async () => {
-      try {
-        await pocketbase.collection("users").authRefresh();
-      } catch (e) {
-        pocketbase.authStore.clear();
-      }
-      if (pocketbase.authStore.isValid) {
-        // update user model
-        const user = await pocketbase
-          .collection("users")
-          .getOne(pocketbase.authStore.model!.id);
-        pocketbase.authStore.save(pocketbase.authStore.token, user);
-      }
-    })();
+    pocketbase
+      .collection("users")
+      .authRefresh()
+      .then((res) => pocketbase.authStore.save(res.token, res.record))
+      .catch(pocketbase.authStore.clear);
   }, []);
 
   const [_loggedIn, loggedIn] = useState(pocketbase.authStore.isValid);
 
-  useEffect(() =>
+  useEffect(() => {
     pocketbase.authStore.onChange((token, model) =>
       loggedIn(!!(token && model))
-    )
-  );
+    );
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
