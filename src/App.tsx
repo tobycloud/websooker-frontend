@@ -22,7 +22,11 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      await pocketbase.collection("users").authRefresh();
+      try {
+        await pocketbase.collection("users").authRefresh();
+      } catch (e) {
+        pocketbase.authStore.clear();
+      }
       if (pocketbase.authStore.isValid) {
         // update user model
         const user = await pocketbase
