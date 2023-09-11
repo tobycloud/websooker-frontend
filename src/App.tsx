@@ -23,7 +23,9 @@ export default function App() {
   useEffect(() => {
     pocketbase
       .collection("users")
-      .authRefresh()
+      .authRefresh({
+        $autoCancel: false,
+      })
       .then((res) => pocketbase.authStore.save(res.token, res.record))
       .catch(pocketbase.authStore.clear);
   }, []);
@@ -72,15 +74,9 @@ function RealApp() {
   }, []);
 
   return (
-    <>
+    <Box>
       <AppBar />
-      {zeroUrls ? (
-        <Welcome />
-      ) : (
-        <Box width={"80vw"}>
-          <WebSookList />
-        </Box>
-      )}
-    </>
+      {zeroUrls ? <Welcome /> : <WebSookList />}
+    </Box>
   );
 }

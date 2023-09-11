@@ -34,7 +34,7 @@ export default function WebSookList() {
   }, []);
 
   return (
-    <List>
+    <List sx={{ maxHeight: "100%", overflow: "auto" }}>
       {websooks.map((websook) => (
         <ListItem key={websook.id.websook}>
           <ListItemText
