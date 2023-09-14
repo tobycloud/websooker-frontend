@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText } from "@mui/material";
 import { useEffect, useState } from "react";
-import { BASE_WEBSOOKER_URL } from "../../constants";
+import { WEBSOOKER_API } from "../../constants";
 import pocketbase from "../../database";
 import Websook from "../../database/websook";
 
@@ -38,8 +38,8 @@ export default function WebSookList() {
       {websooks.map((websook) => (
         <ListItem key={websook.id.websook}>
           <ListItemText
-            primary={`${BASE_WEBSOOKER_URL}/wh/${websook.id.websook}`}
-            secondary={`${BASE_WEBSOOKER_URL}/ws/${websook.id.websocket}`}
+            primary={`https://${WEBSOOKER_API}/wh/${websook.id.websook}`}
+            secondary={`wss://${WEBSOOKER_API}/ws/${websook.id.websocket}`}
           />
         </ListItem>
       ))}
