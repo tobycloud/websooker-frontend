@@ -8,7 +8,7 @@ import oauth2 from "../../database/oauth2";
 
 export default function SocialLogins() {
   return (
-    <Box marginTop={"10vh"}>
+    <Box>
       <>
         <GoogleLoginButton align="center" onClick={() => oauth2("google")}>
           Continue with Google

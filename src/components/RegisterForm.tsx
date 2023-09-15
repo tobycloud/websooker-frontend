@@ -9,7 +9,7 @@ export default function RegisterForm() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   return (
-    <Box width={"25vw"}>
+    <Box marginTop={"2vh"} width={"25vw"}>
       <Typography variant="h4">Register</Typography>
 
       <Box marginTop={"4vh"}>
@@ -20,7 +20,6 @@ export default function RegisterForm() {
           fullWidth
           onChange={(e) => setUsername(e.target.value)}
         />
-        <br />
         <TextField
           label="Email"
           variant="outlined"
@@ -28,7 +27,6 @@ export default function RegisterForm() {
           fullWidth
           onChange={(e) => setEmail(e.target.value)}
         />
-        <br />
         <TextField
           label="Password"
           type="password"
@@ -37,7 +35,6 @@ export default function RegisterForm() {
           fullWidth
           onChange={(e) => setPassword(e.target.value)}
         />
-        <br />
         <TextField
           label="Confirm Password"
           type="password"
@@ -46,30 +43,36 @@ export default function RegisterForm() {
           fullWidth
           onChange={(e) => setPasswordConfirm(e.target.value)}
         />
-        <br />
-        <Button
-          disabled={!email || !username || !password || !passwordConfirm}
-          onClick={async () => {
-            try {
-              await pocketbase.collection("users").create({
-                username,
-                email,
-                emailVisibility: false,
-                password,
-                passwordConfirm,
-              });
-
-              await pocketbase
-                .collection("users")
-                .authWithPassword(email, password);
-            } catch (e) {
-              console.error(e);
-            }
-          }}
-          sx={{ marginTop: "1vh" }}
+        <Box
+          display={"flex"}
+          justifyContent={"right"}
+          mt={"1vh"}
+          sx={{ textAlign: "left" }}
         >
-          Register
-        </Button>
+          <Button
+            disabled={!email || !username || !password || !passwordConfirm}
+            onClick={async () => {
+              try {
+                await pocketbase.collection("users").create({
+                  username,
+                  email,
+                  emailVisibility: false,
+                  password,
+                  passwordConfirm,
+                });
+
+                await pocketbase
+                  .collection("users")
+                  .authWithPassword(email, password);
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+            sx={{ marginTop: "1vh" }}
+          >
+            Register
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

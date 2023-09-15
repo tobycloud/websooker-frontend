@@ -1,40 +1,31 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 
+import { ArrowBack } from "@mui/icons-material";
+import { useState } from "react";
 import LoginForm from "../components/Login/Form";
 import RegisterForm from "../components/RegisterForm";
 
 export default function LoginPage() {
+  const [_openRegisterPage, openRegisterPage] = useState(false);
+
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
+    <Box
+      display="flex"
       justifyContent="center"
-      style={{ minHeight: "100vh" }}
+      alignItems="center"
+      flexDirection="column"
+      margin={"5vh"}
     >
-      <Grid item xs={4}>
-        <Grid
-          container
-          spacing={0}
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          style={{ minHeight: "100vh" }}
-        >
-          <Grid item xs={5}>
-            <LoginForm />
-          </Grid>
-          <Grid item xs={2}>
-            <Typography variant="h5" margin={"5vw"} align="center">
-              or
-            </Typography>
-          </Grid>
-          <Grid item xs={5}>
-            <RegisterForm />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+      {_openRegisterPage ? (
+        <Box>
+          <IconButton onClick={() => openRegisterPage(false)}>
+            <ArrowBack />
+          </IconButton>
+          <RegisterForm />
+        </Box>
+      ) : (
+        <LoginForm openRegisterPage={() => openRegisterPage(true)} />
+      )}
+    </Box>
   );
 }
