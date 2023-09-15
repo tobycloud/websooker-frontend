@@ -1,13 +1,14 @@
 import { Box, Link, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import LoginFailedDialog from "./FailedDialog";
 import LoginButton from "./LoginButton";
 import SocialLogins from "./SocialLogins";
 
-export default function LoginForm(props: { openRegisterPage: () => void }) {
+export default function LoginForm(props: {
+  openRegisterPage: () => void;
+  onFailedLogin?: () => void;
+}) {
   const { openRegisterPage } = props;
-
-  const [loginErrored, errorLogin] = useState(false);
+  const onFailedLogin = props.onFailedLogin || (() => {});
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -45,14 +46,9 @@ export default function LoginForm(props: { openRegisterPage: () => void }) {
           <LoginButton
             username={username}
             password={password}
-            onLoginFailed={() => errorLogin(true)}
+            onLoginFailed={onFailedLogin}
           />
         </Box>
-
-        <LoginFailedDialog
-          open={loginErrored}
-          close={() => errorLogin(false)}
-        />
       </Box>
 
       <Box marginTop={"2vh"}>
