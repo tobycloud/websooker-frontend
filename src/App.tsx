@@ -5,7 +5,7 @@ import AppBar from "./components/AppBar";
 import WebSookList from "./components/WebSook/HomePageList";
 import Welcome from "./components/Welcome";
 import pocketbase from "./database";
-import LoginPage from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
 
 export default function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -41,7 +41,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {_loggedIn ? <RealApp /> : <LoginPage />}
+      {_loggedIn ? <RealApp /> : <LandingPage />}
     </ThemeProvider>
   );
 }
