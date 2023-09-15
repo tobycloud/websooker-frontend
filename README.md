@@ -1,5 +1,7 @@
 # Websooker - Convert WebHook to WebSocket siuuu
 
+This README is best viewed with [RunMe](https://runme.dev)
+
 ## How to build
 
 ### Requirements
